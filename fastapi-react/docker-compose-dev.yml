@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: peci-db-dev
+    image: postgres:16.2-bookworm
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=peci
+    volumes:
+      - ./postgresql:/docker-entrypoint-initdb.d:ro
+    expose:
+      - 5432
+
+  backend:
+    container_name: peci-backend-dev
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/backend:rw
+    environment:
+      - URL_DATABASE=postgresql://postgres:postgres@db:5432/peci
+    expose:
+      - 8000
+
+  frontend:
+    container_name: peci-frontend-dev
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend:/frontend:rw
+    environment:
+      - REACT_APP_DOCKER_CONTAINER=true
+    expose:
+      - 3000
+
+  nginx:
+    container_name: peci-nginx-dev
+    build: ./nginx
+    depends_on:
+      - backend
+      - frontend
+    ports:
+      - "80:80"

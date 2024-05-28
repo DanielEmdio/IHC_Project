@@ -1,0 +1,44 @@
+CREATE TABLE users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    password TEXT,
+    token TEXT,
+    
+);
+
+CREATE TABLE personal_trainers(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    password TEXT,
+    token TEXT
+);
+
+CREATE TABLE videos(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    videopath TEXT,
+    videoname TEXT,
+    description TEXT,
+    muscletargets TEXT,
+    releasedate TEXT,
+    restricted INTEGER,
+    personal_trainer_id INTEGER REFERENCES personal_trainers(id)
+);
+
+CREATE TABLE subscriptions (
+    user_id INTEGER REFERENCES users(id),
+    personal_trainer_id INTEGER REFERENCES personal_trainers(id),
+    PRIMARY KEY (user_id, personal_trainer_id)
+);
+
+INSERT INTO videos(videopath,videoname,description,muscletargets,releasedate,restricted) VALUES ('./video/arms_workout.mp4','arms workout','Good workout for you arms','Biceps,Triceps','November 2, 2023',0);
+INSERT INTO videos(videopath,videoname,description,muscletargets,releasedate,restricted) VALUES ('./video/Boyka_Workout.mp4','The Yuri Boyka Workout','Arms killer workout','Biceps,Triceps,Chest','June 29, 2022',1);
+INSERT INTO videos(videopath,videoname,description,muscletargets,releasedate,restricted) VALUES ('./video/pullUps.mp4','Wider back workout','Pull ups challenge to widen your back','Back','September 14, 2023',1);
+INSERT INTO personal_trainers(username, password) VALUES ('PT1', '123');
+
+INSERT INTO videos(videopath,videoname,description,muscletargets,releaseDate,restricted) VALUES ('./video/uatreino1.mp4','Full body workout','Good workout for beginners','Upper and Lower Body','January 25, 2023',0);
+INSERT INTO videos(videopath,videoname,description,muscletargets,releasedate,restricted) VALUES ('./video/uatreino2.mp4','Upper body workout','A good all-around upper body target workout','Biceps,Triceps,Chest,Shoulders','February 7, 2023',1);
+INSERT INTO videos(videopath,videoname,description,muscletargets,releasedate,restricted) VALUES ('./video/uatreino3.mp4','Leg day','A legs focused workout with some abs in between','Legs,Abs','May 13, 2023',1);
+INSERT INTO personal_trainers(username, password) VALUES ('PT22', '123');
+
+INSERT INTO users(usr, password,ptid) VALUES ('user1', '123',1);
+INSERT INTO users(usr, password) VALUES ('user2', '123');

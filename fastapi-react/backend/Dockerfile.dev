@@ -1,0 +1,20 @@
+# python docker image
+FROM python:3.12.2
+
+# working directory inside the container
+WORKDIR /backend
+
+# copy the requirements.txt file to the working dir inside the container
+COPY requirements.txt ./
+
+# install the app dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# copy the app directory to the container
+COPY ./app ./app
+
+# change the directory to the app directory
+WORKDIR /backend/app
+
+# uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

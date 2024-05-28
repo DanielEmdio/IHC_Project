@@ -1,0 +1,14 @@
+# node docker image
+FROM node:21.6.2
+
+# set frontend directory as working dir
+WORKDIR /frontend
+
+# copy code and assets to target dir
+COPY . ./
+
+# install dependencies
+RUN npm install
+
+# start development server on port 3000
+CMD ["npm", "start", "--port", "3000"]
